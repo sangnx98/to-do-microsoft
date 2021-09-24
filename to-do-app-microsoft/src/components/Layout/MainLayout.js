@@ -5,6 +5,7 @@ import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
+import { Link } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -18,9 +19,25 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 
+import Brightness5Icon from '@mui/icons-material/Brightness5';
+
 import { useHistory } from "react-router-dom";
+import * as path from "path";
 
 const drawerWidth = 240;
+
+const routes = [
+  {
+    path: '/',
+    icon: <Brightness5Icon />,
+    title: 'My Day'
+  },
+  {
+    path: '/important',
+    icon: <MailIcon />,
+    title: 'My Day'
+  }
+]
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -101,12 +118,8 @@ export default function MainLayout(props) {
     setOpen(false);
   };
 
-  const handleRouter = (indx) => {
-    if (indx % 2 === 0) {
-      history.push("/");
-    } else {
-      history.push("/important");
-    }
+  const handleRouter = (link) => {
+    history.push(link)
   };
 
   return (
@@ -143,13 +156,13 @@ export default function MainLayout(props) {
         </DrawerHeader>
         <Divider />
         <List>
-          {["My Day", "Important"].map((text, index) => (
-            <ListItem button key={text} onClick={() => handleRouter(index)}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+          {routes.map((item, index) => (
+              <ListItem key={index} button onClick={() => handleRouter(item.path)}>
+                <ListItemIcon button>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.title} />
+              </ListItem>
           ))}
         </List>
       </Drawer>
