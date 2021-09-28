@@ -26,6 +26,20 @@ function MyDay(){
         setTextInput('');
     }, [textInput, todoList]);
 
+    const onAddEnter = useCallback((e)=>{
+        if(e.key === "Enter"){
+            onAddButtonClick();
+          }
+    }, [textInput, todoList])
+
+    const onDeleteTodo = (id) => {
+        setTodoList (todoList.filter(todoList => todoList.id !== id))
+    };
+
+    const onCheckBtnTodo = useCallback((id) => {
+        setTodoList (prevTodo => prevTodo.map(todo => todo.id === id ? {...todo, isCompleted: true}: todo
+        ));
+    },[]);
 
     return(
             <Box
@@ -44,6 +58,7 @@ function MyDay(){
                         id="standard-adornment-password"
                         value={textInput}
                         onChange={onTextInputChange}
+                        onKeyPress={onAddEnter}
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
@@ -58,7 +73,7 @@ function MyDay(){
                         }
                     />
                 </FormControl>
-                <TodoList todoList={todoList}/>
+                <TodoList todoList={todoList} onDeleteTodo={onDeleteTodo} onCheckBtnTodo ={onCheckBtnTodo}/>
             </Box>
     )
 };

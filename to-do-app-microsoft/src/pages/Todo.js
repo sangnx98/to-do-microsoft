@@ -14,7 +14,7 @@ const Demo = styled("div")(({ theme }) => ({
 backgroundColor: theme.palette.background.paper
 }))
 
-function Todo({todo}){
+function Todo({todo, onDeleteTodo, onCheckBtnTodo}){
     const [dense, setDense] = React.useState(false);
     const [secondary, setSecondary] = React.useState(false);
 
@@ -28,12 +28,13 @@ function Todo({todo}){
                     style = {{ paddingLeft: "0px !important"}}
                     secondaryAction={
                     <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
+                      <DeleteIcon onClick ={()=> onDeleteTodo(todo.id)}/>
                     </IconButton>
                   }
                 >
                   <IconButton>
-                    <CheckCircleIcon/>
+                    <CheckCircleIcon onClick = {()=> onCheckBtnTodo(todo.id)}/>
+                    
                   </IconButton>
                   <ListItemText
                     primary={todo.name}
