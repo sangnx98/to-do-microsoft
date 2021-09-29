@@ -137,7 +137,7 @@ export default function MainLayout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            Welcome to To Do App
           </Typography>
         </Toolbar>
       </AppBar>

@@ -14,12 +14,14 @@ import TodoList from "./TodoList"
 function MyDay(){
     const [todoList, setTodoList] = useState([]);
     const [textInput, setTextInput] = useState("");
+    const [todoEditingId, setTodoEdittingId] = useState('')
+
 
     const onTextInputChange = useCallback((e) => {
         setTextInput(e.target.value);
     },[]);
 
-    const onAddButtonClick = useCallback((e) => {
+    const onAddButtonClick = useCallback(() => {
         setTodoList([{id: v4(), name: textInput, isCompleted: false},
             ...todoList
         ]);
@@ -39,11 +41,22 @@ function MyDay(){
     const onCheckBtnTodo = useCallback((id) => {
         setTodoList (prevTodo => prevTodo.map(todo => todo.id === id ? {...todo, isCompleted: true}: todo
         ));
-    },[]);
+    },[todoList]);
+
+    const getEditTodo = (id = '') =>{
+        setTodoEdittingId({
+            todoEditingId: id
+        })
+    }
+
+    const onEditTodo = (todo, index) =>{
+        todoList.splice(index, 1, todo);
+        setTodoList(todoList);
+        console.log('Da vao edit')
+    }
 
     return(
             <Box
-                component="form"
                 sx={{
                     '& > :not(style)': { m: 0.5, width: '100%' },
                 }}
@@ -73,7 +86,14 @@ function MyDay(){
                         }
                     />
                 </FormControl>
-                <TodoList todoList={todoList} onDeleteTodo={onDeleteTodo} onCheckBtnTodo ={onCheckBtnTodo}/>
+                <TodoList 
+                    todoList={todoList} 
+                    onDeleteTodo={onDeleteTodo} 
+                    onCheckBtnTodo ={onCheckBtnTodo} 
+                    onEditTodo={onEditTodo} 
+                    getEditTodo={getEditTodo}
+                    todoEditingId={todoEditingId}
+                />
             </Box>
     )
 };
