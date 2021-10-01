@@ -16,7 +16,6 @@ function MyDay(){
     const [textInput, setTextInput] = useState("");
     const [todoEditingId, setTodoEdittingId] = useState('')
 
-
     const onTextInputChange = useCallback((e) => {
         setTextInput(e.target.value);
     },[]);
@@ -52,7 +51,8 @@ function MyDay(){
     const onEditTodo = (todo, index) =>{
         todoList.splice(index, 1, todo);
         setTodoList(todoList);
-        console.log('Da vao edit')
+        console.log('Da vao edit', todoList)
+        console.log('Todo:', todo)
     }
 
     return(

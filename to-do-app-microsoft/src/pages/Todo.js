@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -8,24 +8,30 @@ import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import EditIcon from '@mui/icons-material/Edit';
 import { Input } from "@mui/material";
 
 const Demo = styled("div")(({ theme }) => ({
 backgroundColor: theme.palette.background.paper
 }))
 
-function Todo({todo, onDeleteTodo, onCheckBtnTodo, onEditTodo, getEditTodo, todoEditingId}){
+function Todo({todo, onDeleteTodo, onCheckBtnTodo, onEditTodo, getEditTodo, todoEditingId, index}){
 
-  const [newTextInput, setNewTextInput] = useState(todo.newTextInput);
+  const [newTextInput, setNewTextInput] = useState('');
   const isEditing = (todoEditingId.todoEditingId === todo.id);
+  useEffect(()=>{
+    if(todo.name){
+      setNewTextInput(todo.name)
+    }
+  },[todo.name])
+
   const EditTodo = () => {
-    onEditTodo({
-        ...todo,
-        newTextInput
-    })
+    onEditTodo({...todo,name : newTextInput},index)
     getEditTodo('')
-}
+  }
+
+  const onNewInputChange = (e) =>{
+    setNewTextInput(e.target.value)
+  }
   
     return(
     <Box>
@@ -34,7 +40,6 @@ function Todo({todo, onDeleteTodo, onCheckBtnTodo, onEditTodo, getEditTodo, todo
           <Demo>
             <List>
                 <ListItem 
-                    style = {{ paddingLeft: "0px !important"}}
                     secondaryAction={
                     <IconButton edge="end" aria-label="delete">
                       <DeleteIcon onClick ={()=> onDeleteTodo(todo.id)}/>
@@ -44,16 +49,20 @@ function Todo({todo, onDeleteTodo, onCheckBtnTodo, onEditTodo, getEditTodo, todo
                     <IconButton>
                       <CheckCircleIcon onClick = {()=> onCheckBtnTodo(todo.id)}/>
                     </IconButton>
-                    <IconButton>
-                      <EditIcon onClick = {()=> onEditTodo(todo.id)}/>
-                    </IconButton>
                   {
                       !isEditing ?
-                        <label onDoubleClick={() => getEditTodo(todo.id)}>{todo.name}</label>
+                        <label onClick={() => getEditTodo(todo.id)}>{todo.name}</label>
                         :
                       <Input
-                        value={todo.name}
-                        onChange={(e) => setNewTextInput(e.target.value)}
+                        value={newTextInput}
+                        onChange={onNewInputChange}
+                        onBlur={EditTodo}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                              EditTodo()
+                          }
+                          console.log('Sau Edit', newTextInput)
+                      }}
                       />
                   }
                 </ListItem>
