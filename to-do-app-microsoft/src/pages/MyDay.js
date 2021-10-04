@@ -28,7 +28,7 @@ function MyDay(){
     }, [textInput, todoList]);
 
     const onAddEnter = useCallback((e)=>{
-        if(e.key === "Enter"){
+        if(e.key === "Enter" && textInput){
             onAddButtonClick();
           }
     }, [textInput, todoList])

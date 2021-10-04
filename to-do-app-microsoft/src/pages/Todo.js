@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Input } from "@mui/material";
+import { Input, FormHelperText } from "@mui/material";
 
 const Demo = styled("div")(({ theme }) => ({
 backgroundColor: theme.palette.background.paper
@@ -17,7 +17,9 @@ backgroundColor: theme.palette.background.paper
 function Todo({todo, onDeleteTodo, onCheckBtnTodo, onEditTodo, getEditTodo, todoEditingId, index}){
 
   const [newTextInput, setNewTextInput] = useState('');
+  const [errorCatching, setErrorCatching] = useState(false)
   const isEditing = (todoEditingId.todoEditingId === todo.id);
+
   useEffect(()=>{
     if(todo.name){
       setNewTextInput(todo.name)
@@ -32,7 +34,27 @@ function Todo({todo, onDeleteTodo, onCheckBtnTodo, onEditTodo, getEditTodo, todo
   const onNewInputChange = (e) =>{
     setNewTextInput(e.target.value)
   }
+
+  const onCatchError = () =>{
+    if(newTextInput === ""){
+      setErrorCatching(true)
+    }
+    console.log(errorCatching)
+  }
   
+  const renderErrorText = () => {
+      if (newTextInput === "") {
+          return (
+            <FormHelperText 
+                error
+                id="component-error-text"
+                >
+                Error
+            </FormHelperText>
+          )
+      }
+      return null
+  }
     return(
     <Box>
       <Grid container spacing={2}>
@@ -53,17 +75,34 @@ function Todo({todo, onDeleteTodo, onCheckBtnTodo, onEditTodo, getEditTodo, todo
                       !isEditing ?
                         <label onClick={() => getEditTodo(todo.id)}>{todo.name}</label>
                         :
-                      <Input
-                        value={newTextInput}
-                        onChange={onNewInputChange}
-                        onBlur={EditTodo}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                              EditTodo()
-                          }
-                          console.log('Sau Edit', newTextInput)
-                      }}
-                      />
+                        <Box>
+                          <Input
+                            value={newTextInput}
+                            onChange={onNewInputChange}
+                            onBlur={()=> {
+                                if(newTextInput)  
+                                EditTodo() 
+                            }}
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter' && newTextInput) {
+                                  EditTodo()
+                              }
+                              console.log('Sau Edit', newTextInput)
+                            }}
+                            error={newTextInput ===""}
+                          />
+                          {/* {
+                              (newTextInput === "") && (
+                                <FormHelperText 
+                                    error
+                                    id="component-error-text"
+                                    >
+                                    Error
+                                </FormHelperText>
+                              )
+                          } */}
+                          {renderErrorText()}
+                      </Box>
                   }
                 </ListItem>
             </List>
