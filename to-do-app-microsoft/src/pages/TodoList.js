@@ -1,8 +1,16 @@
 import React from 'react';
 import  Todo from './Todo';
 
-function TodoList({todoList, onDeleteTodo, onCheckBtnTodo, onEditTodo, getEditTodo, todoEditingId}){
-    console.log('hahaha', todoList);
+function TodoList(
+    {
+        todoList, 
+        onDeleteTodo, 
+        onCheckBtnTodo, 
+        onEditTodo, 
+        getEditTodo, 
+        todoEditingId
+    })
+    {
     return (
         <>
         {

@@ -1,7 +1,8 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+
+import {v4} from 'uuid'
 
 import Box from '@mui/material/Box';
-import {v4} from 'uuid';
 import { InputLabel } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import FormControl from '@mui/material/FormControl';
@@ -11,10 +12,22 @@ import Input from '@mui/material/Input';
 
 import TodoList from "./TodoList"
 
-function MyDay(){
+function MyDay({})
+    {
     const [todoList, setTodoList] = useState([]);
     const [textInput, setTextInput] = useState("");
-    const [todoEditingId, setTodoEdittingId] = useState('')
+    const [todoEditingId, setTodoEdittingId] = useState('');
+
+    useEffect(()=>{
+        const storageTodoList = localStorage.getItem("MY_DAY");
+        if(storageTodoList){
+            setTodoList(JSON.parse(storageTodoList))
+        }
+    },[])
+    
+    useEffect(()=> {
+        localStorage.setItem("MY_DAY", JSON.stringify(todoList))
+    },[todoList])
 
     const onTextInputChange = useCallback((e) => {
         setTextInput(e.target.value);
@@ -54,6 +67,7 @@ function MyDay(){
         console.log('Da vao edit', todoList)
         console.log('Todo:', todo)
     }
+
 
     return(
             <Box

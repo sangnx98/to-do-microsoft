@@ -17,7 +17,6 @@ backgroundColor: theme.palette.background.paper
 function Todo({todo, onDeleteTodo, onCheckBtnTodo, onEditTodo, getEditTodo, todoEditingId, index}){
 
   const [newTextInput, setNewTextInput] = useState('');
-  const [errorCatching, setErrorCatching] = useState(false)
   const isEditing = (todoEditingId.todoEditingId === todo.id);
 
   useEffect(()=>{
@@ -33,13 +32,6 @@ function Todo({todo, onDeleteTodo, onCheckBtnTodo, onEditTodo, getEditTodo, todo
 
   const onNewInputChange = (e) =>{
     setNewTextInput(e.target.value)
-  }
-
-  const onCatchError = () =>{
-    if(newTextInput === ""){
-      setErrorCatching(true)
-    }
-    console.log(errorCatching)
   }
   
   const renderErrorText = () => {

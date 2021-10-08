@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useHistory } from "react-router-dom";
+
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -16,10 +18,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
-
 import Brightness5Icon from '@mui/icons-material/Brightness5';
-
-import { useHistory } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -32,7 +31,7 @@ const routes = [
   {
     path: '/important',
     icon: <MailIcon />,
-    title: 'My Day'
+    title: 'Important'
   }
 ]
 
